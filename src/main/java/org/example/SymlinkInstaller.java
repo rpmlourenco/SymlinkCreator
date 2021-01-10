@@ -10,7 +10,11 @@ public class SymlinkInstaller {
         System.out.println("The current dir = " + dir);
         System.out.println("Press ENTER to continue...");
         try {
-            System.in.read();
+            if (System.in.read()==0) {
+                System.out.println("Goodbye");
+            } else {
+                System.out.println("Goodbye!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
