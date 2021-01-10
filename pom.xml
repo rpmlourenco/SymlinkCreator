@@ -54,8 +54,8 @@
                         <configuration>
                             <dontWrapJar>false</dontWrapJar>
                             <headerType>console</headerType>
-                            <jar>target/SymlinkCreator-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
-                            <outfile>target/RuiTest.exe</outfile>
+                            <jar>target/${project.name}-${project.version}-jar-with-dependencies.jar</jar>
+                            <outfile>target/${project.name}.exe</outfile>
                             <chdir>.</chdir>
                             <priority>normal</priority>
                             <downloadUrl>http://java.com/download</downloadUrl>
