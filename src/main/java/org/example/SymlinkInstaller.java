@@ -1,8 +1,7 @@
 package org.example;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -60,11 +59,50 @@ public class SymlinkInstaller {
         return aFolder;
     }
 
-    public void createInstaller() {
+    private void copyBuffered(BufferedReader br, BufferedWriter bw) throws IOException {
+        int i;
+        do {
+            i = br.read();
+            if (i != -1) {
+                bw.write((char) i);
+            }
+        } while (i != -1);
+    }
+
+    public void createInstaller() throws IOException {
+
+        BufferedReader inHeader = new BufferedReader(
+                new InputStreamReader(
+                        getClass().getClassLoader().getResourceAsStream("Header.cmd"),
+                        StandardCharsets.UTF_8  // Set encoding
+                )
+        );
+
+        BufferedReader inFooter = new BufferedReader(
+                new InputStreamReader(
+                        getClass().getClassLoader().getResourceAsStream("Footer.cmd"),
+                        StandardCharsets.UTF_8  // Set encoding
+                )
+        );
+
+        BufferedWriter outInstaller = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(baseFolder + "\\SymLink Installer.cmd", false), // true to append
+                        StandardCharsets.UTF_8                  // Set encoding
+                )
+        );
+
+        copyBuffered(inHeader, outInstaller);
+        inHeader.close();
 
         File dir = new File(baseFolder + "\\C");
         File[] files = dir.listFiles();
         if (files != null) analyseFolders(files, dir.getAbsolutePath());
+        //outInstaller.write("Isto é um teste!");
+
+        copyBuffered(inFooter, outInstaller);
+        inFooter.close();
+        outInstaller.close();
 
     }
 
